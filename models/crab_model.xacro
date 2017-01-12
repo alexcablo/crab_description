@@ -223,9 +223,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-                ixx="0.0001" ixy="0.0" ixz="0.0"
-                iyy="0.0001" iyz="0.0"
-                izz="0.0001"/>
+                ixx="0.000317/10000" ixy="-0.000054/10000" ixz="-0.000061/10000"
+                iyy="0.001368/10000" iyz="-0.000011/10000"
+                izz="0.001244/10000"/>
         </inertial>
     </link>
     <gazebo reference="tibia_${side}${num}">
