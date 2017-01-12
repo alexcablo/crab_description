@@ -2,7 +2,8 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <tf/transform_broadcaster.h>
-// Provas
+
+
 int main(int argc, char** argv){
   ros::init(argc, argv, "state_publisher");
   ros::NodeHandle n;
@@ -24,10 +25,9 @@ int main(int argc, char** argv){
   joint_state.position[0] = pos_femr1;
 
   joint_pub.publish(joint_state);
-  loop_rate.sleep();
-
 
   ros::spin();
+  loop_rate.sleep();
 
   return 0;
 }
