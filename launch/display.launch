@@ -1,6 +1,6 @@
 <launch>
 
-<include file="$(find gazebo_example)/launch/empty_world.launch"/>
+<include file="$(find gazebo_ros)/launch/empty_world.launch"/>
 
 <!--<include file="$(find crab_description)/launch/spawn_model.launch"/>-->
 
@@ -25,6 +25,9 @@
 <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 <node name="state_publisher" pkg="crab_description" type="state_publisher" /> -->
 
+<!-- Load joint controller configurations from YAML file to parameter server -->
+<rosparam file="$(find rrbot_control)/param/crt_params.yaml" command="load"/>
+
 <node
   name="joint_state_publisher"
   pkg="joint_state_publisher"
@@ -33,6 +36,31 @@
   name="robot_state_publisher"
   pkg="robot_state_publisher"
   type="state_publisher" />
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/rrbot" args="
+    coxa_joint_r1
+    coxa_joint_r2
+    coxa_joint_r3
+    coxa_joint_l1
+    coxa_joint_l2
+    coxa_joint_l3
+
+    femur_joint_r1
+    femur_joint_r2
+    femur_joint_r3
+    femur_joint_l1
+    femur_joint_l2
+    femur_joint_l3
+
+    tibia_joint_r1
+    tibia_joint_r2
+    tibia_joint_r3
+    tibia_joint_l1
+    tibia_joint_l2
+    tibia_joint_l3
+    joint_state_controller"/>
 
 <node
   name="rviz"
