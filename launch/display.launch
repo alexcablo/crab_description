@@ -1,0 +1,43 @@
+<launch>
+
+<include file="$(find gazebo_example)/launch/empty_world.launch"/>
+
+<!--<include file="$(find crab_description)/launch/spawn_model.launch"/>-->
+
+<arg
+  name="gui"
+  default="True" />
+
+
+<arg name="model_file" default="$(find crab_description)/models/crab_model.urdf"/>
+<arg name="x_pos"      default="0"/>
+<arg name="y_pos"      default="0"/>
+<arg name="z_pos"      default="100"/>
+<arg name="roll"       default="0"/>
+<arg name="pitch"      default="0"/>
+<arg name="yaw"        default="0"/>
+
+<!-- <param name="robot_description" command="cat '$(arg model_file)'" /> -->
+<param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find crab_description)/models/crab_model.xacro'" />
+
+<node name="spawn_crab" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model crab" respawn="false" output="screen"/>
+
+<!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+<node name="state_publisher" pkg="crab_description" type="state_publisher" /> -->
+
+<node
+  name="joint_state_publisher"
+  pkg="joint_state_publisher"
+  type="joint_state_publisher" />
+<node
+  name="robot_state_publisher"
+  pkg="robot_state_publisher"
+  type="state_publisher" />
+
+<node
+  name="rviz"
+  pkg="rviz"
+  type="rviz"
+  args="-d $(find crab_description)/urdf.rviz" />
+
+</launch>
