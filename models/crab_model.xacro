@@ -268,15 +268,6 @@
         <child link="tibia_foot_${side}${num}" />
     </joint>
 
-    <transmission name="tran_tibia_foot_${side}${num}">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="tibia_foot_joint_${side}${num}"> <hardwareInterface>EffortJointInterface</hardwareInterface> 	</joint>
-      <actuator name="motor_tibia_foot_${side}${num}">
-        <hardwareInterface>EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-
     <link name="tibia_foot_${side}${num}" />
     <gazebo reference="tibia_foot_${side}${num}">
         <selfCollide>true</selfCollide>
