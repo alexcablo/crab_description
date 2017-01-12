@@ -2,33 +2,33 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <tf/transform_broadcaster.h>
+#include <std_msgs/Float64.h>
 
 
 int main(int argc, char** argv){
   ros::init(argc, argv, "state_publisher");
   ros::NodeHandle n;
-  ros::Publisher joint_pub = n.advertise<sensor_msgs::JointState>("joint_states", 1);
-  ros::Rate loop_rate(30);
+  ros::Publisher joint_pub = n.advertise<std_msgs::Float64>("/crab/femur_joint_r1_position_controller/command", 1000);
+  ros::Rate loop_rate(1);
 
   // Positions:
 
-  double pos_femr1 = 10;
+  float pos = 10;
 
   //message declarations
 
-  sensor_msgs::JointState joint_state;
+  std_msgs::Float64 femur_joint_r1;
 
   while (ros::ok()) {
 
-    joint_state.header.stamp = ros::Time::now();
-    joint_state.name.resize(10);
-    joint_state.position.resize(10);
-    joint_state.name[0] = "femur_joint_r1";
-    joint_state.position[0] = pos_femr1;
+    femur_joint_r1.data = 10;
 
-    joint_pub.publish(joint_state);
+    joint_pub.publish(femur_joint_r1);
+    ROS_INFO("%f",pos);
 
-    ros::spin();
+    pos_femr1++;
+
+    ros::spinOnce();
     loop_rate.sleep();
 }
 
