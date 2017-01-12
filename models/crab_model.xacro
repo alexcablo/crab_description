@@ -245,15 +245,15 @@
         <material>Gazebo/Grey</material>
     </gazebo>
 
-    <!-- ros_control plugin -->
-    <gazebo>
-    	<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-    		<robotNamespace>/crab</robotNamespace>
-    		<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-    	</plugin>
-    </gazebo>
-
 </xacro:macro>
+
+<!-- ros_control plugin -->
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/crab</robotNamespace>
+    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+  </plugin>
+</gazebo>
 
 <!-- Build robot model -->
     <xacro:leg side="r" num="1" x="0.087598" 	y="-0.050575" 	angle="-${pi/3}" />

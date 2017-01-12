@@ -18,16 +18,22 @@ int main(int argc, char** argv){
 
   sensor_msgs::JointState joint_state;
 
-  joint_state.header.stamp = ros::Time::now();
-  joint_state.name.resize(10);
-  joint_state.position.resize(10);
-  joint_state.name[0] = "femur_joint_r1";
-  joint_state.position[0] = pos_femr1;
+  while (ros::ok()) {
 
-  joint_pub.publish(joint_state);
+    joint_state.header.stamp = ros::Time::now();
+    joint_state.name.resize(10);
+    joint_state.position.resize(10);
+    joint_state.name[0] = "femur_joint_r1";
+    joint_state.position[0] = pos_femr1;
 
-  ros::spin();
-  loop_rate.sleep();
+    joint_pub.publish(joint_state);
+
+    ros::spin();
+    loop_rate.sleep();
+}
 
   return 0;
 }
+
+//['coxa_joint_r1','femur_joint_r1','tibia_joint_r1','coxa_joint_r2','femur_joint_r2','tibia_joint_r2','coxa_joint_r3','femur_joint_r3','tibia_joint_r3', 'coxa_joint_l1','femur_joint_l1','tibia_joint_l1', 'coxa_joint_l2','femur_joint_l2','tibia_joint_l2', 'coxa_joint_l3','femur_joint_l3','tibia_joint_l3']
+//(10.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
