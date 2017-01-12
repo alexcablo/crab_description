@@ -35,5 +35,5 @@ int main(int argc, char** argv){
   return 0;
 }
 
-//['coxa_joint_r1','femur_joint_r1','tibia_joint_r1','coxa_joint_r2','femur_joint_r2','tibia_joint_r2','coxa_joint_r3','femur_joint_r3','tibia_joint_r3', 'coxa_joint_l1','femur_joint_l1','tibia_joint_l1', 'coxa_joint_l2','femur_joint_l2','tibia_joint_l2', 'coxa_joint_l3','femur_joint_l3','tibia_joint_l3']
+//['coxa_joint_r1','femur_joint_r1','tibia_joint_r1','coxa_joint_r2','femur_joint_r2','tibia_joint_r2','coxa_joint_r3','femur_joint_r3','tibia_joint_r3','coxa_joint_l1','femur_joint_l1','tibia_joint_l1','coxa_joint_l2','femur_joint_l2','tibia_joint_l2','coxa_joint_l3','femur_joint_l3','tibia_joint_l3']
 //(10.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)

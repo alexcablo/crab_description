@@ -32,16 +32,17 @@
                 izz="0.0001"/>
         </inertial>
     </link>
-    <joint name="base_joint" type="fixed">
-        <parent link="base_link" />
-        <child link="thorax" />
-        <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint>
 
     <gazebo reference="base_link">
         <selfCollide>true</selfCollide>
         <material>Gazebo/Grey</material>
     </gazebo>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="thorax" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
 
     <link name="thorax">
         <collision>
@@ -69,6 +70,11 @@
         </inertial>
     </link>
 
+    <gazebo reference="thorax">
+        <selfCollide>true</selfCollide>
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
 <!-- Joint properties -->
     <xacro:property name="joint_lower_limit" value="-${1.5}" />
     <xacro:property name="joint_upper_limit" value="${1.5}" />
@@ -84,10 +90,6 @@
         <parent link="thorax" />
         <child link="leg_center_${side}${num}" />
     </joint>
-    <gazebo reference="thorax">
-        <selfCollide>true</selfCollide>
-        <material>Gazebo/Grey</material>
-    </gazebo>
 
     <link name="leg_center_${side}${num}">
         <collision>
@@ -127,6 +129,15 @@
         <limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
     </joint>
 
+    <transmission name="tran_coxa_${side}${num}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="coxa_joint_${side}${num}"> <hardwareInterface>EffortJointInterface</hardwareInterface> 	</joint>
+      <actuator name="motor_coxa_${side}${num}">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
     <link name="coxa_${side}${num}">
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -164,6 +175,15 @@
         <axis xyz="0 0 -1" />
         <limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
     </joint>
+
+    <transmission name="tran_femur_${side}${num}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="femur_joint_${side}${num}"> <hardwareInterface>EffortJointInterface</hardwareInterface> 	</joint>
+      <actuator name="motor_femur_${side}${num}">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
 
     <link name="femur_${side}${num}">
         <collision>
@@ -203,6 +223,15 @@
         <limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
     </joint>
 
+    <transmission name="tran_tibia_${side}${num}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="tibia_joint_${side}${num}"> <hardwareInterface>EffortJointInterface</hardwareInterface> 	</joint>
+      <actuator name="motor_tibia_${side}${num}">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
     <link name="tibia_${side}${num}">
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -238,6 +267,15 @@
         <parent link="tibia_${side}${num}" />
         <child link="tibia_foot_${side}${num}" />
     </joint>
+
+    <transmission name="tran_tibia_foot_${side}${num}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="tibia_foot_joint_${side}${num}"> <hardwareInterface>EffortJointInterface</hardwareInterface> 	</joint>
+      <actuator name="motor_tibia_foot_${side}${num}">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
 
     <link name="tibia_foot_${side}${num}" />
     <gazebo reference="tibia_foot_${side}${num}">
