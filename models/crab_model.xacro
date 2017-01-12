@@ -63,9 +63,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-              ixx="0.011935/10000" ixy="0.0" ixz="-0.000021/10000"
-              iyy="0.022562/10000" iyz="-0.000001/10000"
-              izz="0.026533/10000"/>
+              ixx="0.011935" ixy="0.0" ixz="-0.000021"
+              iyy="0.022562" iyz="-0.000001"
+              izz="0.026533"/>
         </inertial>
     </link>
 
@@ -109,9 +109,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/> <!-- The mass has to be recomputed -->
             <inertia
-                ixx="0.011935/10000" ixy="0.0" ixz="-0.000021/10000"
-                iyy="0.022562/10000" iyz="-0.000001/10000"
-                izz="0.026533/10000"/>
+                ixx="0.011935" ixy="0.0" ixz="-0.000021"
+                iyy="0.022562" iyz="-0.000001"
+                izz="0.026533"/>
         </inertial>
     </link>
     <gazebo reference="leg_center_${side}${num}">
@@ -147,9 +147,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-                ixx="0.00138/10000" ixy="0.000093/10000" ixz="-0.000177/10000"
-                iyy="0.001442/10000" iyz="0.00003/10000"
-                izz="0.001371/10000"/>
+                ixx="0.00138" ixy="0.000093" ixz="-0.000177"
+                iyy="0.001442" iyz="0.00003"
+                izz="0.001371"/>
         </inertial>
     </link>
     <gazebo reference="coxa_${side}${num}">
@@ -185,9 +185,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-                ixx="0.000012/10000" ixy="0.0" ixz="0.0"
-                iyy="0.000319/10000" iyz="0.0"
-                izz="0.000330/10000"/>
+                ixx="0.000012" ixy="0.0" ixz="0.0"
+                iyy="0.000319" iyz="0.0"
+                izz="0.000330"/>
         </inertial>
     </link>
     <gazebo reference="femur_${side}${num}">
@@ -223,9 +223,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-                ixx="0.000317/10000" ixy="-0.000054/10000" ixz="-0.000061/10000"
-                iyy="0.001368/10000" iyz="-0.000011/10000"
-                izz="0.001244/10000"/>
+                ixx="0.000317" ixy="-0.000054" ixz="-0.000061"
+                iyy="0.001368" iyz="-0.000011"
+                izz="0.001244"/>
         </inertial>
     </link>
     <gazebo reference="tibia_${side}${num}">
