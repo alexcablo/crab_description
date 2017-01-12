@@ -8,7 +8,6 @@
   name="gui"
   default="True" />
 
-
 <arg name="model_file" default="$(find crab_description)/models/crab_model.urdf"/>
 <arg name="x_pos"      default="0"/>
 <arg name="y_pos"      default="0"/>
