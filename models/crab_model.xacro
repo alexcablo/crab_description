@@ -40,9 +40,7 @@
 
     <gazebo reference="base_link">
         <selfCollide>true</selfCollide>
-        <material name="orange">
-          <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
-        </material>
+        <material>Gazebo/Grey</material>
     </gazebo>
 
     <link name="thorax">
@@ -65,9 +63,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-                ixx="0.0001" ixy="0.0" ixz="0.0"
-                iyy="0.0001" iyz="0.0"
-                izz="0.0001"/>
+              ixx="0.011935/10000" ixy="0.0" ixz="-0.000021/10000"
+              iyy="0.022562/10000" iyz="-0.000001/10000"
+              izz="0.026533/10000"/>
         </inertial>
     </link>
 
@@ -149,9 +147,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/>
             <inertia
-                ixx="0.0001" ixy="0.0" ixz="0.0"
-                iyy="0.0001" iyz="0.0"
-                izz="0.0001"/>
+                ixx="0.00138/10000" ixy="0.000093/10000" ixz="-0.000177/10000"
+                iyy="0.001442/10000" iyz="0.00003/10000"
+                izz="0.001371/10000"/>
         </inertial>
     </link>
     <gazebo reference="coxa_${side}${num}">
