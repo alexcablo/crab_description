@@ -46,7 +46,7 @@ int main(int argc, char** argv){
 
         joint_pub[i].publish(global_pos_msgs);
         ROS_INFO("%f",position[i]);
-        position[1]++;
+        //position[1]++;
         i++;
       }
     }

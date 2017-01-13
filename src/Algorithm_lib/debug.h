@@ -1,0 +1,5 @@
+
+#ifndef DEBUG_H_INCLUDED
+#define DEBUG_H_INCLUDED
+
+#endif // VAR_H_INCLUDED
