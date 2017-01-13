@@ -6,9 +6,11 @@
 #include "Algorithm_lib/NEAT.h"
 #include <sstream>
 #include "Algorithm_lib/debug.h"
+#include "Algorithm_lib/debug_algorithm.h"
 #include <std_msgs/Float64.h>
+#include <std_srvs/EmptyRequest.h>
 
-#include <gazebo_msgs/ModelStates>
+#include <gazebo_msgs/ModelStates.h>
 
 const std::string suffixes[6] = {"_r1", "_r2", "_r3", "_l1", "_l2", "_l3"};
 const std::string names[3] = {"coxa_joint", "femur_joint", "tibia_joint"};
@@ -30,28 +32,13 @@ float X=0, Y=0, Z=0;
 ros::Time t_stamp;
 
 float ts = 0.1;
-int time_loop_limit = 1000; //(1000*ts)=10 sec
+int time_loop_limit = 10; //(1000*ts)=10 sec
 
-void sensorCallback(gazebo_msgs::ModelStates msg){
+void pos_sensor_callback(gazebo_msgs::ModelStates msg){
   //Sensor
-	distance_U = msg.distance_U;
-	X = msg.X;
-	Y = msg.Y;
-	Z = msg.Z;
-	vel_X = msg.vel_X;
-	vel_Y = msg.vel_Y;
-	vel_Z = msg.vel_Z;
-	accel_X = msg.accel_X;
-	accel_Y = msg.accel_Y;
-	accel_Z = msg.accel_Z;
-	gyro_X = msg.gyro_X;
-	gyro_Y = msg.gyro_Y;
-	gyro_Z = msg.gyro_Z;
-	t_stamp = msg.t_stamp;
-	for (int i=0;i<=11;i++){
-		pwm_current[i] = msg.pwm[i];
-	}
-	printf("Reading sensor data X: %f",X);
+  X = msg.pose[1].position.x;
+  Y = msg.pose[1].position.y;
+
 }
 
 
@@ -82,6 +69,7 @@ int main(int argc, char **argv)
   }
 
   ros::Subscriber position_sensor = n.subscribe("/gazebo/model_states",1000, pos_sensor_callback);
+  ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::EmptyRequest> ("/gazebo/reset_world");
 
 	ros::Rate loop_rate(1/ts);
 
@@ -99,6 +87,21 @@ int main(int argc, char **argv)
 	float Fitness = 0;
 
 	//Initialize pub/subs
+
+  //Initialize robot
+  i = 0;
+  for (int name=0; name<3; name++){
+    for(int suf=0; suf<6; suf++){
+      global_pos_msgs.data = 0;
+
+      joint_pub[i].publish(global_pos_msgs);
+      #ifdef DEBUG_H_INCLUDED
+      ROS_INFO("%f",pwm_current[i]);
+      #endif //DEBUG_H_INCLUDED
+      //position[1]++;
+      i++;
+    }
+  }
 
 
 
@@ -153,6 +156,7 @@ int main(int argc, char **argv)
 			Spidy_pool.evaluateCurrent(InputVec,OutputVec);
 
 
+
 			//Process outputs
 			for(int i=0;i<12;i++)
 			{
@@ -175,7 +179,10 @@ int main(int argc, char **argv)
           global_pos_msgs.data = pwm_current[i];
 
           joint_pub[i].publish(global_pos_msgs);
+
+              #ifdef DEBUG_H_INCLUDED
           ROS_INFO("%f",pwm_current[i]);
+          		#endif //DEBUG_H_INCLUDED
           //position[1]++;
           i++;
         }
@@ -189,13 +196,19 @@ int main(int argc, char **argv)
 			time_loop++;
 		}
 
+
+    #ifdef DEBUG_H_INCLUDED
+		ROS_INFO("Simulation ended");
+		#endif //DEBUG_H_INCLUDED
+
+
 		//Calculate fitness
 
-    //Fitness = sqrt(pow())
+    Fitness = sqrt(pow(Y,2)+pow(X,2));
 
 		//Evaluation ended
 
-		//Spidy_pool.assignfitness(Fitness);
+		Spidy_pool.assignfitness(Fitness);
 
 		//Next genome
 		if(Spidy_pool.SpeciesVec[Spidy_pool.currentSpecies].GenomesVec.size()==Spidy_pool.currentGenome+1)
@@ -217,6 +230,8 @@ int main(int argc, char **argv)
 		}else{
       		Spidy_pool.currentGenome++;
 		}
+
+
 
 	}
 
