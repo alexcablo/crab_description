@@ -1,6 +1,6 @@
 <launch>
 
-<include file="$(find gazebo_example)/launch/empty_world.launch"/>
+<include file="$(find gazebo_ros)/launch/empty_world.launch"/>
 
 <!--<include file="$(find crab_description)/launch/spawn_model.launch"/>-->
 

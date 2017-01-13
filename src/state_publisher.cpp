@@ -4,29 +4,47 @@
 #include <tf/transform_broadcaster.h>
 #include <std_msgs/Float64.h>
 
+const std::string suffixes[6] = {"_r1", "_r2", "_r3", "_l1", "_l2", "_l3"};
+const std::string names[3] = {"coxa_joint", "femur_joint", "tibia_joint"};
+//
+// void chatterLegsState (const LegsStateConstPtr& state){
+//
+// }
 
 int main(int argc, char** argv){
   ros::init(argc, argv, "state_publisher");
   ros::NodeHandle n;
-  ros::Publisher joint_pub = n.advertise<std_msgs::Float64>("/crab/femur_joint_r1_position_controller/command", 1000);
+  ros::Publisher joint_pub[18];
+
+  std::string joint_name;
+  int i =0;
+	for (int name=0; name<3; name++){
+		for(int suf=0; suf<6; suf++){
+			joint_name = names[name] + suffixes[suf];
+      joint_pub[i] = n.advertise<std_msgs::Float64>(joint_name, 1000);
+      i++;
+    }
+  }
+
   ros::Rate loop_rate(1);
 
-  // Positions:
+    // Positions:
 
-  float pos = 10;
+  float position[18];
+
 
   //message declarations
 
-  std_msgs::Float64 femur_joint_r1;
+  std_msgs::Float64 global_pos_msgs;
 
   while (ros::ok()) {
 
-    femur_joint_r1.data = 10;
+    global_pos_msgs.data = pos;
 
-    joint_pub.publish(femur_joint_r1);
+    joint_pub[1].publish(femur_joint_r1);
     ROS_INFO("%f",pos);
 
-    pos_femr1++;
+    pos++;
 
     ros::spinOnce();
     loop_rate.sleep();
