@@ -13,7 +13,7 @@ int main(int argc, char** argv){
 
   // Positions:
 
-  float pos = 10;
+  float pos = 1;
 
   //message declarations
 
@@ -21,7 +21,7 @@ int main(int argc, char** argv){
 
   while (ros::ok()) {
 
-    femur_joint_r1.data = 10;
+    femur_joint_r1.data = pos;
 
     joint_pub.publish(femur_joint_r1);
     ROS_INFO("%f",pos);
