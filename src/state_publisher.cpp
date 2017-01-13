@@ -39,6 +39,7 @@ int main(int argc, char** argv){
   std_msgs::Float64 global_pos_msgs;
 
   while (ros::ok()) {
+
     i = 0;
     for (int name=0; name<3; name++){
       for(int suf=0; suf<6; suf++){
@@ -52,6 +53,7 @@ int main(int argc, char** argv){
     }
 
     ROS_INFO("Ended time step");
+
     ros::spinOnce();
     loop_rate.sleep();
 }

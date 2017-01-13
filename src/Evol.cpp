@@ -69,7 +69,7 @@ int main(int argc, char **argv)
   }
 
   ros::Subscriber position_sensor = n.subscribe("/gazebo/model_states",1000, pos_sensor_callback);
-  ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::EmptyRequest> ("/gazebo/reset_world");
+  //ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::EmptyRequest> ("/gazebo/reset_world");
 
 	ros::Rate loop_rate(1/ts);
 
