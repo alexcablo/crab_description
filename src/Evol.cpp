@@ -1,5 +1,6 @@
 
 #include "ros/ros.h"
+#include "ros/time.h"
 #include <stdlib.h>
 #include <ctime>
 #include "std_msgs/String.h"
@@ -8,7 +9,7 @@
 #include "Algorithm_lib/debug.h"
 #include "Algorithm_lib/debug_algorithm.h"
 #include <std_msgs/Float64.h>
-#include <std_srvs/EmptyRequest.h>
+#include "std_srvs/Empty.h"
 
 #include <gazebo_msgs/ModelStates.h>
 
@@ -69,7 +70,8 @@ int main(int argc, char **argv)
   }
 
   ros::Subscriber position_sensor = n.subscribe("/gazebo/model_states",1000, pos_sensor_callback);
-  //ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::EmptyRequest> ("/gazebo/reset_world");
+  ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::Empty> ("/gazebo/reset_simulation");
+  std_srvs::Empty reset_srvs;
 
 	ros::Rate loop_rate(1/ts);
 
@@ -208,6 +210,9 @@ int main(int argc, char **argv)
 
 		//Evaluation ended
 
+    #ifdef DEBUG_ALGO_H_INCLUDED
+    ROS_INFO("Fitness: %f",Fitness);
+    #endif //DEBUG_ALGO_H_INCLUDED
 		Spidy_pool.assignfitness(Fitness);
 
 		//Next genome
@@ -231,6 +236,37 @@ int main(int argc, char **argv)
       		Spidy_pool.currentGenome++;
 		}
 
+    //Reset simulation
+
+
+    i = 0;
+    for (int name=0; name<3; name++){
+      for(int suf=0; suf<6; suf++){
+        global_pos_msgs.data = 0;
+
+        joint_pub[i].publish(global_pos_msgs);
+        #ifdef DEBUG_H_INCLUDED
+        ROS_INFO("%f",pwm_current[i]);
+        #endif //DEBUG_H_INCLUDED
+        //position[1]++;
+        i++;
+      }
+    }
+
+    ros::spinOnce();
+
+    //Call reset service
+
+    reset_simulation.call(reset_srvs);
+
+    #ifdef DEBUG_ALGO_H_INCLUDED
+    ROS_INFO("Simulation reseted");
+    #endif //DEBUG_ALGO_H_INCLUDED
+
+    //ros::Duration(30).sleep();
+
+
+    ros::spinOnce();
 
 
 	}
