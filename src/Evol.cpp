@@ -1,5 +1,6 @@
 
 #include "ros/ros.h"
+#include "ros/time.h"
 #include <stdlib.h>
 #include <ctime>
 #include "std_msgs/String.h"
@@ -69,7 +70,7 @@ int main(int argc, char **argv)
   }
 
   ros::Subscriber position_sensor = n.subscribe("/gazebo/model_states",1000, pos_sensor_callback);
-  ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::Empty> ("/gazebo/reset_world");
+  ros::ServiceClient reset_simulation = n.serviceClient <std_srvs::Empty> ("/gazebo/reset_simulation");
   std_srvs::Empty reset_srvs;
 
 	ros::Rate loop_rate(1/ts);
@@ -209,6 +210,9 @@ int main(int argc, char **argv)
 
 		//Evaluation ended
 
+    #ifdef DEBUG_ALGO_H_INCLUDED
+    ROS_INFO("Fitness: %f",Fitness);
+    #endif //DEBUG_ALGO_H_INCLUDED
 		Spidy_pool.assignfitness(Fitness);
 
 		//Next genome
@@ -249,8 +253,17 @@ int main(int argc, char **argv)
       }
     }
 
+    ros::spinOnce();
+
     //Call reset service
 
+    reset_simulation.call(reset_srvs);
+
+    #ifdef DEBUG_ALGO_H_INCLUDED
+    ROS_INFO("Simulation reseted");
+    #endif //DEBUG_ALGO_H_INCLUDED
+
+    //ros::Duration(30).sleep();
 
 
     ros::spinOnce();

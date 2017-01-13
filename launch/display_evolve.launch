@@ -1,0 +1,77 @@
+<launch>
+
+<include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+
+<!--<include file="$(find crab_description)/launch/spawn_model.launch"/>-->
+
+<arg
+  name="gui"
+  default="True" />
+
+
+<arg name="model_file" default="$(find crab_description)/models/crab_model.urdf"/>
+<arg name="x_pos"      default="0"/>
+<arg name="y_pos"      default="0"/>
+<arg name="z_pos"      default="0.1"/>
+<arg name="roll"       default="0"/>
+<arg name="pitch"      default="0"/>
+<arg name="yaw"        default="0"/>
+
+<!-- <param name="robot_description" command="cat '$(arg model_file)'" /> -->
+<param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find crab_description)/models/crab_model.xacro'" />
+
+<node name="spawn_crab" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model crab" respawn="true" output="screen"/>
+
+<!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+<node name="state_publisher" pkg="crab_description" type="state_publisher" /> -->
+
+<!-- Load joint controller configurations from YAML file to parameter server -->
+<rosparam file="$(find crab_description)/params/ctrl_params.yaml" command="load"/>
+
+<node
+  name="joint_state_publisher"
+  pkg="joint_state_publisher"
+  type="joint_state_publisher" />
+<node
+  name="robot_state_publisher"
+  pkg="robot_state_publisher"
+  type="state_publisher" />
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/crab" args="
+    joint_state_controller
+
+    coxa_joint_r1_position_controller
+    coxa_joint_r2_position_controller
+    coxa_joint_r3_position_controller
+    coxa_joint_l1_position_controller
+    coxa_joint_l2_position_controller
+    coxa_joint_l3_position_controller
+
+    femur_joint_r1_position_controller
+    femur_joint_r2_position_controller
+    femur_joint_r3_position_controller
+    femur_joint_l1_position_controller
+    femur_joint_l2_position_controller
+    femur_joint_l3_position_controller
+
+    tibia_joint_r1_position_controller
+    tibia_joint_r2_position_controller
+    tibia_joint_r3_position_controller
+    tibia_joint_l1_position_controller
+    tibia_joint_l2_position_controller
+    tibia_joint_l3_position_controller"/>
+
+
+    <!-- <parm name ="/use_sim_time" value="true"/> -->
+
+    <node name="Evolve_node" pkg="crab_description" type="Evol" respawn="false" output="screen"/>
+
+<!-- <node
+  name="rviz"
+  pkg="rviz"
+  type="rviz"
+  args="-d $(find crab_description)/urdf.rviz" /> -->
+
+</launch>
