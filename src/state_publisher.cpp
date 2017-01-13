@@ -2,33 +2,59 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <tf/transform_broadcaster.h>
+#include <std_msgs/Float64.h>
 
+const std::string suffixes[6] = {"_r1", "_r2", "_r3", "_l1", "_l2", "_l3"};
+const std::string names[3] = {"coxa_joint", "femur_joint", "tibia_joint"};
+//
+// void chatterLegsState (const LegsStateConstPtr& state){
+//
+// }
 
 int main(int argc, char** argv){
   ros::init(argc, argv, "state_publisher");
   ros::NodeHandle n;
-  ros::Publisher joint_pub = n.advertise<sensor_msgs::JointState>("joint_states", 1);
-  ros::Rate loop_rate(30);
+  ros::Publisher joint_pub[18];
 
-  // Positions:
+  std::string joint_name;
+  int i =0;
+	for (int name=0; name<3; name++){
+		for(int suf=0; suf<6; suf++){
+			joint_name = "/crab/" + names[name] + suffixes[suf]+ "_position_controller/command";
+      joint_pub[i] = n.advertise<std_msgs::Float64>(joint_name, 1000);
+      //ROS_INFO("%s",joint_name);
+      i++;
+    }
+  }
 
-  double pos_femr1 = 10;
+  ros::Rate loop_rate(1);
+
+    // Positions:
+
+  float position[18] = {};
+
 
   //message declarations
 
-  sensor_msgs::JointState joint_state;
+  std_msgs::Float64 global_pos_msgs;
 
   while (ros::ok()) {
 
-    joint_state.header.stamp = ros::Time::now();
-    joint_state.name.resize(10);
-    joint_state.position.resize(10);
-    joint_state.name[0] = "femur_joint_r1";
-    joint_state.position[0] = pos_femr1;
+    i = 0;
+    for (int name=0; name<3; name++){
+      for(int suf=0; suf<6; suf++){
+        global_pos_msgs.data = position[i];
 
-    joint_pub.publish(joint_state);
+        joint_pub[i].publish(global_pos_msgs);
+        ROS_INFO("%f",position[i]);
+        //position[1]++;
+        i++;
+      }
+    }
 
-    ros::spin();
+    ROS_INFO("Ended time step");
+
+    ros::spinOnce();
     loop_rate.sleep();
 }
 
