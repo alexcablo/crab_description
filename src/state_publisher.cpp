@@ -20,8 +20,9 @@ int main(int argc, char** argv){
   int i =0;
 	for (int name=0; name<3; name++){
 		for(int suf=0; suf<6; suf++){
-			joint_name = names[name] + suffixes[suf];
+			joint_name = "/crab/" + names[name] + suffixes[suf]+ "_position_controller/command";
       joint_pub[i] = n.advertise<std_msgs::Float64>(joint_name, 1000);
+      //ROS_INFO("%s",joint_name);
       i++;
     }
   }
@@ -30,7 +31,7 @@ int main(int argc, char** argv){
 
     // Positions:
 
-  float position[18];
+  float position[18] = {};
 
 
   //message declarations
@@ -38,14 +39,19 @@ int main(int argc, char** argv){
   std_msgs::Float64 global_pos_msgs;
 
   while (ros::ok()) {
+    i = 0;
+    for (int name=0; name<3; name++){
+      for(int suf=0; suf<6; suf++){
+        global_pos_msgs.data = position[i];
 
-    global_pos_msgs.data = pos;
+        joint_pub[i].publish(global_pos_msgs);
+        ROS_INFO("%f",position[i]);
+        position[1]++;
+        i++;
+      }
+    }
 
-    joint_pub[1].publish(femur_joint_r1);
-    ROS_INFO("%f",pos);
-
-    pos++;
-
+    ROS_INFO("Ended time step");
     ros::spinOnce();
     loop_rate.sleep();
 }
