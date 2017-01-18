@@ -6,10 +6,11 @@
 #include "std_msgs/String.h"
 #include "Algorithm_lib/NEAT.h"
 #include <sstream>
-#include "Algorithm_lib/debug.h"
+//#include "Algorithm_lib/debug.h"
 #include "Algorithm_lib/debug_algorithm.h"
 #include <std_msgs/Float64.h>
 #include "std_srvs/Empty.h"
+#include <sstream>
 
 #include <gazebo_msgs/ModelStates.h>
 
@@ -32,8 +33,8 @@ float vel_X=0, vel_Y=0, vel_Z=0;
 float X=0, Y=0, Z=0;
 ros::Time t_stamp;
 
-float ts = 0.1;
-int time_loop_limit = 10; //(1000*ts)=10 sec
+float ts = 0.01;
+int time_loop_limit = 500; //(1000*ts)=10 sec
 
 void pos_sensor_callback(gazebo_msgs::ModelStates msg){
   //Sensor
@@ -52,7 +53,8 @@ int main(int argc, char **argv)
 
 	ros::init(argc, argv, "Algorithm_node");
 
-	srand (time(NULL));
+	//srand (time(NULL));
+  srand(1000);
 
 	ros::NodeHandle n;
 
@@ -80,11 +82,11 @@ int main(int argc, char **argv)
 	int time_loop = 0;
 
 	float currentTime = 0;
-	float InputVec[12] = {};//Input vector to the network
-	float OutputVec[12] = {};//Output vector of the network
+	float InputVec[19] = {};//Input vector to the network
+	float OutputVec[18] = {};//Output vector of the network
 	float StepSize = 0.1; //Size of the possition change each second
-	float Out_hlim = 1.5; //Up limit possition
-	float Out_llim = -1.5; //Down limit positon
+	float Out_hlim = 1; //Up limit possition
+	float Out_llim = -1; //Down limit positon
 
 	float Fitness = 0;
 
@@ -105,10 +107,10 @@ int main(int argc, char **argv)
     }
   }
 
-
+  reset_simulation.call(reset_srvs);
 
 	//Initalization of the pool
-	Pool Spidy_pool(12,12);
+	Pool Spidy_pool(19,18);
 
 	#ifdef DEBUG_H_INCLUDED
 	ROS_INFO("Pool created");
@@ -148,28 +150,29 @@ int main(int argc, char **argv)
 
 			//TODO: Sensor read implementation
 
-			for(int i=0;i<12;i++)
+			for(int i=0;i<19;i++)
 			{
 				InputVec[i]=pwm_current[i];
 			}
 
 			currentTime = time_loop*ts;
 
+      InputVec[18]=currentTime;
+
 			Spidy_pool.evaluateCurrent(InputVec,OutputVec);
 
 
 
 			//Process outputs
-			for(int i=0;i<12;i++)
+			for(int i=0;i<18;i++)
 			{
 				OutputVec[i] = OutputVec[i]*StepSize;
-
 				pwm_desired[i] += OutputVec[i]*ts;
 
-				if(pwm_current[i]>Out_hlim)
+				if(pwm_desired[i]>Out_hlim)
 					pwm_desired[i]=Out_hlim;
 
-				if(pwm_current[i]<Out_llim)
+				if(pwm_desired[i]<Out_llim)
 					pwm_desired[i]=Out_llim;
 			}
 
@@ -178,12 +181,13 @@ int main(int argc, char **argv)
       i = 0;
       for (int name=0; name<3; name++){
         for(int suf=0; suf<6; suf++){
-          global_pos_msgs.data = pwm_current[i];
+          global_pos_msgs.data = pwm_desired[i];
 
           joint_pub[i].publish(global_pos_msgs);
 
               #ifdef DEBUG_H_INCLUDED
-          ROS_INFO("%f",pwm_current[i]);
+                ROS_INFO("%f",pwm_desired[i]);
+                ROS_INFO("%f",OutputVec[i]);
           		#endif //DEBUG_H_INCLUDED
           //position[1]++;
           i++;
@@ -228,6 +232,13 @@ int main(int argc, char **argv)
 				#ifdef DEBUG_ALGO_H_INCLUDED
 				ROS_INFO("New Generation: %d",Spidy_pool.generation);
 				#endif //DEBUG_ALGO_H_INCLUDED
+
+        std::stringstream ss2;
+        ss2 << Spidy_pool.generation;
+        std::string generationstr = ss2.str();
+        std::string textfile = "Generations/TestGen" + generationstr +".txt";
+
+        customWriteFile(Spidy_pool,textfile);
 			}else{
 				Spidy_pool.currentSpecies ++;
 				Spidy_pool.currentGenome = 0;
@@ -235,6 +246,7 @@ int main(int argc, char **argv)
 		}else{
       		Spidy_pool.currentGenome++;
 		}
+
 
     //Reset simulation
 
@@ -253,6 +265,7 @@ int main(int argc, char **argv)
       }
     }
 
+    ros::Duration(1).sleep();
     ros::spinOnce();
 
     //Call reset service

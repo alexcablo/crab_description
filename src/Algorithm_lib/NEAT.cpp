@@ -1160,7 +1160,7 @@ void Pool::evaluateCurrent(float* Inputseval,float* Outputsval)
             }
         }
         //cout << i;
-        currentgenome->Network[i].value=sigmoid(sum);
+        currentgenome->Network[i].value=sinus(sum);
     }
 
     //cout << "Evaluated" <<endl;
@@ -1205,6 +1205,14 @@ float sigmoid(float value)
         float out=0;
 
         return out=value/(sqrtf(1+value*value));
+}
+
+
+float sinus(float value)
+{
+
+  float out=0;
+  return out = cos(value);
 }
 //int main()
 //{
