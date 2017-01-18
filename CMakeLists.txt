@@ -11,8 +11,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package()
 
+add_definitions(-std=c++11)
 
 include_directories( ${catkin_INCLUDE_DIRS})
 
 add_executable(state_publisher src/state_publisher.cpp)
 target_link_libraries(state_publisher ${catkin_LIBRARIES})
+
+add_executable(Evolve_node src/Evol.cpp src/Algorithm_lib/NEAT.cpp)
+target_link_libraries(Evolve_node ${catkin_LIBRARIES})

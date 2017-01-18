@@ -1,0 +1,5 @@
+
+#ifndef DEBUG_ALGO_H_INCLUDED
+#define DEBUG_ALGO_H_INCLUDED
+
+#endif // VAR_H_INCLUDED

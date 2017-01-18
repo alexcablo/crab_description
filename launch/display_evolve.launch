@@ -20,7 +20,7 @@
 <!-- <param name="robot_description" command="cat '$(arg model_file)'" /> -->
 <param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find crab_description)/models/crab_model.xacro'" />
 
-<node name="spawn_crab" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model crab" respawn="false" output="screen"/>
+<node name="spawn_crab" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model crab" respawn="true" output="screen"/>
 
 <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 <node name="state_publisher" pkg="crab_description" type="state_publisher" /> -->
@@ -62,6 +62,11 @@
     tibia_joint_l1_position_controller
     tibia_joint_l2_position_controller
     tibia_joint_l3_position_controller"/>
+
+
+    <!-- <parm name ="/use_sim_time" value="true"/> -->
+
+    <node name="Evolve_node" pkg="crab_description" type="Evol" respawn="false" output="screen"/>
 
 <!-- <node
   name="rviz"
