@@ -20,3 +20,6 @@ target_link_libraries(state_publisher ${catkin_LIBRARIES})
 
 add_executable(Evolve_node src/Evol.cpp src/Algorithm_lib/NEAT.cpp)
 target_link_libraries(Evolve_node ${catkin_LIBRARIES})
+
+add_executable(Evolve_node_paral src/Evol_paral.cpp src/Algorithm_lib/NEAT.cpp)
+target_link_libraries(Evolve_node_paral ${catkin_LIBRARIES})

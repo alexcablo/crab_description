@@ -82,8 +82,8 @@ int main(int argc, char **argv)
 	int time_loop = 0;
 
 	float currentTime = 0;
-	float InputVec[19] = {};//Input vector to the network
-	float OutputVec[18] = {};//Output vector of the network
+	float InputVec[12] = {};//Input vector to the network
+	float OutputVec[12] = {};//Output vector of the network
 	float StepSize = 0.1; //Size of the possition change each second
 	float Out_hlim = 1; //Up limit possition
 	float Out_llim = -1; //Down limit positon
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
       global_pos_msgs.data = 0;
 
       joint_pub[i].publish(global_pos_msgs);
-      #ifdef DEBUG_H_INCLUDED
+      #ifdef DEBUG_H_INCLUDEDi
       ROS_INFO("%f",pwm_desired[i]);
       #endif //DEBUG_H_INCLUDED
       //position[1]++;
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
   reset_simulation.call(reset_srvs);
 
 	//Initalization of the pool
-	Pool Spidy_pool(19,18);
+	Pool Spidy_pool(12,12);
 
 	#ifdef DEBUG_H_INCLUDED
 	ROS_INFO("Pool created");
@@ -150,21 +150,19 @@ int main(int argc, char **argv)
 
 			//TODO: Sensor read implementation
 
-			for(int i=0;i<19;i++)
+			for(int i=0;i<12;i++)
 			{
 				InputVec[i]=pwm_desired[i];
 			}
 
 			currentTime = time_loop*ts;
 
-      InputVec[18]=currentTime;
-
 			Spidy_pool.evaluateCurrent(InputVec,OutputVec);
 
 
 
 			//Process outputs
-			for(int i=0;i<18;i++)
+			for(int i=0;i<6;i++)
 			{
 				OutputVec[i] = OutputVec[i]*StepSize;
 				pwm_desired[i] += OutputVec[i]*ts;
@@ -175,6 +173,19 @@ int main(int argc, char **argv)
 				if(pwm_desired[i]<Out_llim)
 					pwm_desired[i]=Out_llim;
 			}
+      for(int i=6;i<12;i++)
+			{
+				OutputVec[i] = OutputVec[i]*StepSize;
+				pwm_desired[i] += OutputVec[i]*ts;
+        pwm_desired[i+6] += -1*OutputVec[i]*ts;
+
+				if(pwm_desired[i]>Out_hlim)
+					pwm_desired[i]=Out_hlim;
+
+				if(pwm_desired[i]<Out_llim)
+					pwm_desired[i]=Out_llim;
+			}
+
 
 			//TODO: Send pwm(pwm_current)
 
