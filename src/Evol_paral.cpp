@@ -96,7 +96,7 @@ int main(int argc, char **argv)
   i = 0;
   for (int name=0; name<3; name++){
     for(int suf=0; suf<6; suf++){
-      global_pos_msgs.data = 0;ros::Duration(1).sleep();
+      global_pos_msgs.data = 0;
 
       joint_pub[i].publish(global_pos_msgs);
       #ifdef DEBUG_H_INCLUDEDi

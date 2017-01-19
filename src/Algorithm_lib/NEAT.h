@@ -18,7 +18,7 @@
 
 
 //Try to change to a dynamic definition of the inputs
-const int Inputs = 12+1;//Number of inputs + bias
+const int Inputs = 13+1;//Number of inputs + bias
 const int Outputs = 12;
 
 const float DeltaDisjoint = 2.0;

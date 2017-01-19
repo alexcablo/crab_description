@@ -1153,14 +1153,16 @@ void Pool::evaluateCurrent(float* Inputseval,float* Outputsval)
         //int sizei = currentgenome->Network[i].IncomingVec.size();
         for(unsigned int j=0;j<currentgenome->Network[i].IncomingVec.size();++j)
         {
-            if(currentgenome->Network[i].IncomingVec[j]==i){
-                sum += valant*currentgenome->Network[i].WeightVec[j];
+            if((currentgenome->Network[i].IncomingVec[j])==i){
+                sum += (valant)*(currentgenome->Network[i].WeightVec[j]);
             }else{
-                sum += currentgenome->Network[currentgenome->Network[i].IncomingVec[j]].value*currentgenome->Network[i].WeightVec[j];
+                sum += (currentgenome->Network[currentgenome->Network[i].IncomingVec[j]].value)*(currentgenome->Network[i].WeightVec[j]);
             }
         }
         //cout << i;
         currentgenome->Network[i].value=sinus(sum);
+
+        //printf("Neuron out%f",sum);
     }
 
     //cout << "Evaluated" <<endl;
@@ -1175,11 +1177,13 @@ void Pool::evaluateCurrent(float* Inputseval,float* Outputsval)
             if(currentgenome->Network[i].IncomingVec[j]==i){
                 sum += valant*currentgenome->Network[i].WeightVec[j];
             }else{
-                sum += currentgenome->Network[currentgenome->Network[i].IncomingVec[j]].value*currentgenome->Network[i].WeightVec[j];
+                sum += (currentgenome->Network[currentgenome->Network[i].IncomingVec[j]].value)*(currentgenome->Network[i].WeightVec[j]);
             }
         }
         //cout << i;
-        currentgenome->Network[i].value=sigmoid(sum);
+        currentgenome->Network[i].value=sinus(sum);
+
+        //printf("Neuron output: %f",sum);
 
         Outputsval[cont]=currentgenome->Network[i].value;
         cont++;
