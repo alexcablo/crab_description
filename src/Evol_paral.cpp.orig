@@ -84,7 +84,11 @@ int main(int argc, char **argv)
 	float currentTime = 0;
 	float InputVec[13] = {};//Input vector to the network
 	float OutputVec[12] = {};//Output vector of the network
+<<<<<<< HEAD
+	float StepSize = 0.5; //Size of the possition change each second
+=======
 	float StepSize = 0.25; //Size of the possition change each second
+>>>>>>> 0344f67c0c15f5b6a3697df3d0d3887edcb31a5b
 	float Out_hlim = 1; //Up limit possition
 	float Out_llim = -1; //Down limit positon
 
