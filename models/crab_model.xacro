@@ -44,11 +44,6 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
-    <gazebo reference="base_link">
-        <selfCollide>true</selfCollide>
-        <material>Gazebo/Grey</material>
-    </gazebo>
-
     <link name="thorax">
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -67,7 +62,7 @@
         </visual>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.3"/>
+            <mass value="0.41"/>
             <inertia
               ixx="0.011935" ixy="0.0" ixz="-0.000021"
               iyy="0.022562" iyz="-0.000001"
@@ -115,9 +110,9 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.02"/> <!-- The mass has to be recomputed -->
             <inertia
-                ixx="0.011935" ixy="0.0" ixz="-0.000021"
-                iyy="0.022562" iyz="-0.000001"
-                izz="0.026533"/>
+                ixx="0.011935e-3" ixy="0.0" ixz="-0.000021e-3"
+                iyy="0.022562e-3" iyz="-0.000001e-3"
+                izz="0.026533e-3"/>
         </inertial>
     </link>
     <gazebo reference="leg_center_${side}${num}">
@@ -160,7 +155,7 @@
         </visual>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.02"/>
+            <mass value="0.0147"/>
             <inertia
                 ixx="0.00138" ixy="0.000093" ixz="-0.000177"
                 iyy="0.001442" iyz="0.00003"
@@ -207,7 +202,7 @@
         </visual>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.02"/>
+            <mass value="0.032"/>
             <inertia
                 ixx="0.000012" ixy="0.0" ixz="0.0"
                 iyy="0.000319" iyz="0.0"
@@ -254,7 +249,7 @@
         </visual>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.02"/>
+            <mass value="0.008"/>
             <inertia
                 ixx="0.000317" ixy="-0.000054" ixz="-0.000061"
                 iyy="0.001368" iyz="-0.000011"

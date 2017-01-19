@@ -53,8 +53,8 @@ int main(int argc, char **argv)
 
 	ros::init(argc, argv, "Algorithm_node");
 
-	//srand (time(NULL));
-  srand(1000);
+	srand (time(NULL));
+  //srand(1000);
 
 	ros::NodeHandle n;
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	float currentTime = 0;
 	float InputVec[12] = {};//Input vector to the network
 	float OutputVec[12] = {};//Output vector of the network
-	float StepSize = 0.1; //Size of the possition change each second
+	float StepSize = 0.5; //Size of the possition change each second
 	float Out_hlim = 1; //Up limit possition
 	float Out_llim = -1; //Down limit positon
 
