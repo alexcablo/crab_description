@@ -186,6 +186,12 @@ int main(int argc, char **argv)
 
 				if(pwm_desired[i]<Out_llim)
 					pwm_desired[i]=Out_llim;
+
+          if(pwm_desired[i+6]>Out_hlim)
+            pwm_desired[i+6]=Out_hlim;
+
+          if(pwm_desired[i+6]<Out_llim)
+            pwm_desired[i+6]=Out_llim;
 			}
 
 
@@ -198,10 +204,11 @@ int main(int argc, char **argv)
 
           joint_pub[i].publish(global_pos_msgs);
 
-              #ifdef DEBUG_H_INCLUDED
-                ROS_INFO("%f",pwm_desired[i]);
-                ROS_INFO("%f",OutputVec[i]);
-          		#endif //DEBUG_H_INCLUDED
+          #ifdef DEBUG_H_INCLUDED
+            ROS_INFO("Pwm: %f",pwm_desired[i]);
+            if(i<12)
+            ROS_INFO("Out val: %f",OutputVec[i]);
+          #endif //DEBUG_H_INCLUDED
           //position[1]++;
           i++;
         }
