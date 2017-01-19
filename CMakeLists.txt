@@ -23,3 +23,6 @@ target_link_libraries(Evolve_node ${catkin_LIBRARIES})
 
 add_executable(Evolve_node_paral src/Evol_paral.cpp src/Algorithm_lib/NEAT.cpp)
 target_link_libraries(Evolve_node_paral ${catkin_LIBRARIES})
+
+add_executable(Evolve_node_single src/Evol_single.cpp src/Algorithm_lib/NEAT.cpp)
+target_link_libraries(Evolve_node_single ${catkin_LIBRARIES})

@@ -470,7 +470,7 @@ Pool customReadFile()
     std::string::size_type sz;
     ifstream file;
     string line;
-    file.open("Generations/TestGen214.txt");
+    file.open("Single.txt");
 
     READ;
     int inputsval = atoi( line.c_str() );
@@ -1212,7 +1212,7 @@ float sinus(float value)
 {
 
   float out=0;
-  return out = cos(value);
+  return out = sin(value);
 }
 //int main()
 //{
