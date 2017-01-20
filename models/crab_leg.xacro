@@ -8,7 +8,7 @@
 		<parent link="base_link" />
 		<child link="thorax" />
 		<origin xyz="0 0 0" rpy="0 0 0" />
-	</joint>			
+	</joint>
 
 	<link name="thorax">
     		<visual>
@@ -49,6 +49,9 @@
     		<child link="coxa_${side}${num}" />
     		<axis xyz="0 0 -1" />
     		<limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
+
+				<limit lower="-1.0"
+							 upper="1.0"/>
   	</joint>
 
   	<link name="coxa_${side}${num}">
@@ -113,5 +116,5 @@
 	</xacro:macro>
 
 	<xacro:leg side="r" num="1" x="0.087598" y="-0.050575" />
-  
+
 </robot>

@@ -37,7 +37,7 @@ const float StepSize=0.1;
 const float DisableMutationChance=0.3;
 const float EnableMutationChance=0.2;
 
-const int PopulationT = 100;
+const int PopulationT = 10;
 const int MaxNodes=10000;
 
 class gene  // This class is the gene that creates a genome
