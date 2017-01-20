@@ -29,3 +29,6 @@ target_link_libraries(Evolve_node_single ${catkin_LIBRARIES})
 
 add_executable(Evolve_node_2leg src/Evol_2leg.cpp src/Algorithm_lib/NEAT.cpp)
 target_link_libraries(Evolve_node_2leg ${catkin_LIBRARIES})
+
+add_executable(Evolve_node_4leg src/Evol_4leg.cpp src/Algorithm_lib/NEAT.cpp)
+target_link_libraries(Evolve_node_4leg ${catkin_LIBRARIES})
