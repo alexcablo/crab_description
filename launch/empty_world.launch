@@ -1,6 +1,8 @@
+
 <launch>
 
   <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="extra_gazebo_args" default=""/>
@@ -28,7 +30,7 @@
 
   <!-- start gazebo server-->
   <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="screen"
-	args="$(arg command_arg1) $(arg command_arg2) $(arg command_arg3) -e $(arg physics) $(arg extra_gazebo_args) $(arg world_name)" />
+    args="$(arg command_arg1) $(arg command_arg2) $(arg command_arg3) -e $(arg physics) $(arg extra_gazebo_args) $(arg world_name)" />
 
   <!-- start gazebo client -->
   <group if="$(arg gui)">

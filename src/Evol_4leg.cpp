@@ -6,7 +6,7 @@
 #include "std_msgs/String.h"
 #include "Algorithm_lib/NEAT.h"
 #include <sstream>
-//#include "Algorithm_lib/debug.h"
+#include "Algorithm_lib/debug.h"
 #include "Algorithm_lib/debug_algorithm.h"
 #include <std_msgs/Float64.h>
 #include "std_srvs/Empty.h"
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 
       if(Z>0.25)
       {
-        end =1;
+        end = 1;
       }
 
 			loop_rate.sleep();
@@ -266,9 +266,10 @@ int main(int argc, char **argv)
 
 
 		//Calculate fitness
-
-    Fitness = sqrt(pow(Y,2)+pow(X,2));
-
+    Fitness = 0;
+    if (!end){
+      Fitness = sqrt(pow(Y,2)+pow(X,2));
+    }
 		//Evaluation ended
 
     #ifdef DEBUG_ALGO_H_INCLUDED

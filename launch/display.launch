@@ -1,6 +1,6 @@
 <launch>
 
-<include file="$(find crab_description)/launch/empty_world.launch"/>
+<include file="$(find crab_description)/launch/empty_world2.launch"/>
 
 <!--<include file="$(find crab_description)/launch/spawn_model.launch"/>-->
 
@@ -12,7 +12,7 @@
 <arg name="model_file" default="$(find crab_description)/models/crab_model.urdf"/>
 <arg name="x_pos"      default="0"/>
 <arg name="y_pos"      default="0"/>
-<arg name="z_pos"      default="0.1"/>
+<arg name="z_pos"      default="0.11"/>
 <arg name="roll"       default="0"/>
 <arg name="pitch"      default="0"/>
 <arg name="yaw"        default="0"/>
@@ -62,6 +62,8 @@
     tibia_joint_l1_position_controller
     tibia_joint_l2_position_controller
     tibia_joint_l3_position_controller"/>
+
+    <node name="Evolve_node_paral" pkg="crab_description" type="Evolve_node_paral" respawn="false" output="screen" cwd="node"/>
 
 <!-- <node
   name="rviz"

@@ -87,6 +87,7 @@ int main(int argc, char **argv)
 	float StepSize = 0.25; //Size of the possition change each second
 	float Out_hlim = 1; //Up limit possition
 	float Out_llim = -1; //Down limit positon
+  int end =0;
 
 	float Fitness = 0;
 
@@ -146,8 +147,8 @@ int main(int argc, char **argv)
 		time_loop = 0;
 
 		memset(pwm_desired, 0, sizeof(pwm_desired));
-
-		while(time_loop<time_loop_limit){
+    end =0;
+		while((time_loop<time_loop_limit)&&(!end)){
 
 			//TODO: Sensor read implementation
 
@@ -167,14 +168,38 @@ int main(int argc, char **argv)
 			for(int i=0;i<6;i++)
 			{
 				OutputVec[i] = OutputVec[i]*StepSize;
-				pwm_desired[i] += OutputVec[i]*ts;
-
-				if(pwm_desired[i]>Out_hlim)
-					pwm_desired[i]=Out_hlim;
-
-				if(pwm_desired[i]<Out_llim)
-					pwm_desired[i]=Out_llim;
 			}
+
+
+      if((-pwm_desired[1]+pwm_desired[0])>-1){
+        pwm_desired[0] += OutputVec[0]*ts;
+      }
+      if((-pwm_desired[1]+pwm_desired[0])>-1){
+        if((-pwm_desired[2]+pwm_desired[1])>-1){
+          pwm_desired[1] += OutputVec[1]*ts;
+        }
+      }
+      if((-pwm_desired[2]+pwm_desired[1])>-1){
+        pwm_desired[2] += OutputVec[2]*ts;
+      }
+
+
+
+      if((-pwm_desired[4]+pwm_desired[3])>-1){
+        pwm_desired[3] += OutputVec[3]*ts;
+      }
+      if((-pwm_desired[4]+pwm_desired[3])>-1){
+        if((-pwm_desired[5]+pwm_desired[4])>-1){
+          pwm_desired[4] += OutputVec[4]*ts;
+        }
+      }
+      if((-pwm_desired[5]+pwm_desired[4])>-1){
+        pwm_desired[5] += OutputVec[5]*ts;
+      }
+
+      //Check collisions
+
+
       for(int i=6;i<12;i++)
 			{
 				OutputVec[i] = OutputVec[i]*StepSize;
@@ -193,6 +218,15 @@ int main(int argc, char **argv)
           if(pwm_desired[i+6]<Out_llim)
             pwm_desired[i+6]=Out_llim;
 			}
+
+      for(int i=0;i<6;i++)
+      {
+          if(pwm_desired[i]>Out_hlim)
+            pwm_desired[i]=Out_hlim;
+
+          if(pwm_desired[i]<Out_llim)
+            pwm_desired[i]=Out_llim;
+      }
 
 
 			//TODO: Send pwm(pwm_current)
@@ -214,7 +248,8 @@ int main(int argc, char **argv)
         }
       }
 
-
+      if(Z>0.2)
+      end=1;
 
 			ros::spinOnce();
 
@@ -226,10 +261,10 @@ int main(int argc, char **argv)
     #ifdef DEBUG_H_INCLUDED
 		ROS_INFO("Simulation ended");
 		#endif //DEBUG_H_INCLUDED
-
+    Fitness=0;
 
 		//Calculate fitness
-
+    if(!end)
     Fitness = sqrt(pow(Y,2)+pow(X,2));
 
 		//Evaluation ended
@@ -250,8 +285,8 @@ int main(int argc, char **argv)
         std::stringstream ss2;
         ss2 << Spidy_pool.generation;
         std::string generationstr = ss2.str();
-        std::string textfile = "Generations/TestGen" + generationstr +".txt";
-
+        //std::string textfile = "TestGen" + generationstr +".txt";
+        std::string textfile = "holapepito.txt";
         customWriteFile(Spidy_pool,textfile);
 
 				Spidy_pool.newGeneration();

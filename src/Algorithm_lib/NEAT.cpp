@@ -150,6 +150,7 @@ void Pool::initializePool()
 {
     for(int i=0;i<Population;++i)
     {
+      printf("%d",i );
         genome basic = basicGenome(&innovation);
         //printf("%d\n",i);
         addToSpecies(basic);
