@@ -470,7 +470,7 @@ Pool customReadFile()
     std::string::size_type sz;
     ifstream file;
     string line;
-    file.open("Single.txt");
+    file.open("TestGen30.txt");
 
     READ;
     int inputsval = atoi( line.c_str() );

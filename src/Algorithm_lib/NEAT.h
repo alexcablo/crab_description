@@ -18,8 +18,8 @@
 
 
 //Try to change to a dynamic definition of the inputs
-const int Inputs = 13+1;//Number of inputs + bias
-const int Outputs = 12;
+const int Inputs = 5+1;//Number of inputs + bias
+const int Outputs = 4;
 
 const float DeltaDisjoint = 2.0;
 const float DeltaWeights = 0.4;
@@ -37,7 +37,7 @@ const float StepSize=0.1;
 const float DisableMutationChance=0.3;
 const float EnableMutationChance=0.2;
 
-const int PopulationT = 10;
+const int PopulationT = 25;
 const int MaxNodes=10000;
 
 class gene  // This class is the gene that creates a genome

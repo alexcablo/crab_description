@@ -76,8 +76,8 @@
     </gazebo>
 
 <!-- Joint properties -->
-    <xacro:property name="joint_lower_limit" value="-${0.8}" />
-    <xacro:property name="joint_upper_limit" value="${0.8}" />
+    <xacro:property name="joint_lower_limit" value="-${1}" />
+    <xacro:property name="joint_upper_limit" value="${1}" />
     <xacro:property name="joint_effort" value="10000" />
     <xacro:property name="joint_velocity" value="100" />
 

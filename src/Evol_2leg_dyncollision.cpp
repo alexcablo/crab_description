@@ -21,7 +21,7 @@ const std::string names[3] = {"coxa_joint", "femur_joint", "tibia_joint"};
 
 float pwm_desired[18]={};
 //float pwm_current[18]={};
-float distance_U = 0;
+float distance = 0;
 int accel_X = 0;
 int accel_Y = 0;
 int accel_Z = 0;
@@ -31,6 +31,7 @@ int gyro_Z = 0;
 
 float vel_X=0, vel_Y=0, vel_Z=0;
 float X=0, Y=0, Z=0;
+float X_desired = 10, Y_desired = 0;
 ros::Time t_stamp;
 
 float ts = 0.01;
@@ -115,11 +116,16 @@ int main(int argc, char **argv)
 	//Initalization of the pool
 	Pool Spidy_pool(5,4);
 
+
 	#ifdef DEBUG_H_INCLUDED
 	ROS_INFO("Pool created");
 	#endif //DEBUG_H_INCLUDED
 
 	Spidy_pool.initializePool();
+    // Spidy_pool = customReadFile();
+    //
+    // Spidy_pool.currentGenome = 0;
+    // Spidy_pool.currentSpecies = 0;
 
 	#ifdef DEBUG_H_INCLUDED
 	ROS_INFO("Pool initialized");
@@ -150,6 +156,9 @@ int main(int argc, char **argv)
 		memset(pwm_desired, 0, sizeof(pwm_desired));
 
     end = 0;
+
+    time_loop_limit = 500 + floor(Spidy_pool.generation/10)*100;
+    
 		while((time_loop<time_loop_limit)&&(!end)){
 
 			//TODO: Sensor read implementation
@@ -172,13 +181,33 @@ int main(int argc, char **argv)
 				OutputVec[i] = OutputVec[i]*StepSize;
 			}
 
+      if((-pwm_desired[1]+pwm_desired[0])>-1){
+        pwm_desired[0] += OutputVec[0]*ts;
+      }
+      if((-pwm_desired[1]+pwm_desired[0])>-1){
+        if((-pwm_desired[2]+pwm_desired[1])>-1){
+          pwm_desired[1] += -1*OutputVec[1]*ts;
+        }
+      }
+      if((-pwm_desired[2]+pwm_desired[1])>-1){
+        pwm_desired[2] += OutputVec[0]*ts;
+      }
 
-      pwm_desired[0] += OutputVec[0]*ts;
-      pwm_desired[1] += -1*OutputVec[1]*ts;
-      pwm_desired[2] += OutputVec[0]*ts;
-      pwm_desired[3] += OutputVec[1]*ts;
-      pwm_desired[4] += -1*OutputVec[0]*ts;
-      pwm_desired[5] += OutputVec[1]*ts;
+
+
+      if((-pwm_desired[4]+pwm_desired[3])>-1){
+        pwm_desired[3] += OutputVec[1]*ts;
+      }
+      if((-pwm_desired[4]+pwm_desired[3])>-1){
+        if((-pwm_desired[5]+pwm_desired[4])>-1){
+          pwm_desired[4] += -1*OutputVec[0]*ts;
+        }
+      }
+      if((-pwm_desired[5]+pwm_desired[4])>-1){
+        pwm_desired[5] += OutputVec[1]*ts;
+      }
+
+
       pwm_desired[6] += OutputVec[2]*ts;
       pwm_desired[12] += -1*OutputVec[2]*ts;
       pwm_desired[7] += OutputVec[3]*ts;
@@ -194,31 +223,12 @@ int main(int argc, char **argv)
 
       for(int i=0;i<18;i++)
       {
-        	if(pwm_desired[i]>Out_hlim)
-  					pwm_desired[i]=Out_hlim;
+          if(pwm_desired[i]>Out_hlim)
+        		pwm_desired[i]=Out_hlim;
 
   				if(pwm_desired[i]<Out_llim)
   					pwm_desired[i]=Out_llim;
       }
-
-      // for(int i=6;i<12;i++)
-			// {
-			// 	OutputVec[i] = OutputVec[i]*StepSize;
-			// 	pwm_desired[i] += OutputVec[i]*ts;
-      //   pwm_desired[i+6] += -1*OutputVec[i]*ts;
-      //
-			// 	if(pwm_desired[i]>Out_hlim)
-			// 		pwm_desired[i]=Out_hlim;
-      //
-			// 	if(pwm_desired[i]<Out_llim)
-			// 		pwm_desired[i]=Out_llim;
-      //
-      //     if(pwm_desired[i+6]>Out_hlim)
-      //       pwm_desired[i+6]=Out_hlim;
-      //
-      //     if(pwm_desired[i+6]<Out_llim)
-      //       pwm_desired[i+6]=Out_llim;
-			// }
 
 
 			//TODO: Send pwm(pwm_current)
@@ -257,14 +267,22 @@ int main(int argc, char **argv)
 		ROS_INFO("Simulation ended");
 		#endif //DEBUG_H_INCLUDED
 
+    Fitness = 0;
 
 		//Calculate fitness
 
-    Fitness = sqrt(pow(Y,2)+pow(X,2));
+    distance = sqrt(pow(Y-Y_desired,2)+pow(X-X_desired,2));
 
+
+    if(!end)
+    {
+      if(distance>0)
+      Fitness = 1/distance;
+    }
 		//Evaluation ended
 
     #ifdef DEBUG_ALGO_H_INCLUDED
+    ROS_INFO("Distance: %f",distance);
     ROS_INFO("Fitness: %f",Fitness);
     #endif //DEBUG_ALGO_H_INCLUDED
 		Spidy_pool.assignfitness(Fitness);

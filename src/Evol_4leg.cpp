@@ -267,6 +267,8 @@ int main(int argc, char **argv)
 
 		//Calculate fitness
 
+    Fitness = 0;
+    if(!end)
     Fitness = sqrt(pow(Y,2)+pow(X,2));
 
 		//Evaluation ended
